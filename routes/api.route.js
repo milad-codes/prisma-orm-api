@@ -68,7 +68,22 @@ router.delete('/products/:id', async (req, res, next) => {
 })
 
 router.patch('/products/:id', async (req, res, next) => {
-  res.send({ message: 'Ok api is working 🚀' })
+  try {
+    const { id } = req.params
+    const product = await prisma.product.update({
+      where: {
+        id: Number(id)
+      },
+      data: req.body,
+      include: {
+        Category: true
+      }
+    })
+
+    res.json(product)
+  } catch (error) {
+    next(error)
+  }
 })
 
 module.exports = router
