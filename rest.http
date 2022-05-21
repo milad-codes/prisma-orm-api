@@ -1,1 +1,16 @@
-http://localhost:3000/api/products
+GET http://localhost:3000/api/products
+
+###
+
+GET http://localhost:3000/api/products/2
+
+###
+
+POST http://localhost:3000/api/products
+Content-Type: application/json
+
+{
+    "name": "iphone 12 pro",
+    "price": 999,
+    "categoryId": 1
+}

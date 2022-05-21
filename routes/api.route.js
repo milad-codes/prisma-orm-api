@@ -13,8 +13,8 @@ router.get('/products', async (req, res, next) => {
 
     const categories = await prisma.category.findMany({
       include: {
-        products: true
-      }
+        products: true,
+      },
     })
 
     res.json({ products, categories })
@@ -24,11 +24,32 @@ router.get('/products', async (req, res, next) => {
 })
 
 router.get('/products/:id', async (req, res, next) => {
-  res.send({ message: 'Ok api is working 🚀' })
+  try {
+    const { id } = req.params
+    const product = await prisma.product.findUnique({
+      where: {
+        id: Number(id)
+      },
+      include: {
+        Category: true
+      }
+    })
+
+    res.json(product)
+  } catch (error) {
+    next(error)
+  }
 })
 
 router.post('/products', async (req, res, next) => {
-  res.send({ message: 'Ok api is working 🚀' })
+  try {
+    const product = await prisma.product.create({
+      data: req.body,
+    })
+    res.json(product)
+  } catch (error) {
+    next(error)
+  }
 })
 
 router.delete('/products/:id', async (req, res, next) => {
